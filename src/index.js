@@ -11,7 +11,7 @@ import InfiniteScroll from 'infinite-scroll';
 const lightbox = new SimpleLightbox('.gallery a', {
   /* options */
 });
-const axios = require('axios');
+
 let num = 1;
 
 const gallery = document.querySelector('.gallery');
@@ -29,15 +29,21 @@ loadMoreBtn.style.display = 'none';
 const getSearchedResults = async e => {
   const requestName = searchForm.elements['searchQuery'].value;
   const result = await fetchPictures(requestName, num);
+
   if (result.hits.length === 0) {
     loadMoreBtn.style.display = 'none';
-    return Notify.failure("We're sorry, but you've reached the end of search results.");
-  } else {
+    Notify.failure("We're sorry, but you've reached the end of search results.");
+  } else if (result.hits.length >= 40) {
     loadMoreBtn.style.display = 'inline-block';
+  } else if (result.hits.length < 40) {
+    loadMoreBtn.style.display = 'none';
+    Notify.failure("We're sorry, but you've reached the end of search results.");
   }
   if (result.total === 0) {
     loadMoreBtn.style.display = 'none';
-    return console.log('Sorry, there are no images matching your search query. Please try again.');
+    return Notify.failure(
+      'Sorry, there are no images matching your search query. Please try again.',
+    );
   }
   if (num >= 2) {
     Notify.success(`Hooray! We found ${result.totalHits} images.`);
@@ -100,5 +106,4 @@ const renderPictureListItems = async ({ hits }) => {
 loadMoreBtn.addEventListener('click', async e => {
   ++num;
   await getSearchedResults();
-  console.log(num);
 });
