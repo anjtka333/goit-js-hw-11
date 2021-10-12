@@ -17,13 +17,13 @@ const gallery = document.querySelector('.gallery');
 const searchForm = document.querySelector('.search-form');
 const loadMoreBtn = document.querySelector('.load-more');
 loadMoreBtn.style.display = 'none';
-// let elem = document.querySelector('.container');
-// let infScroll = new InfiniteScroll(elem, {
-//   // options
-//   path: '.pagination__next',
-//   append: '.post',
-//   history: false,
-// });
+let elem = document.querySelector('.container');
+let infScroll = new InfiniteScroll(elem, {
+  // options
+  path: '.pagination__next',
+  append: '.post',
+  history: false,
+});
 const getSearchedResults = async e => {
   const requestName = searchForm.elements['searchQuery'].value;
   const result = await fetchPictures(requestName, num);
