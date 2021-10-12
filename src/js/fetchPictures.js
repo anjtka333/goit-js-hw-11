@@ -11,5 +11,3 @@ export const fetchPictures = async (requestName, num) => {
     return users;
   } else return Promise.reject('Requst error');
 };
-
-// fetchPictures().then(requestName => console.log(requestName));

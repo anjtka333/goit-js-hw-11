@@ -5,7 +5,8 @@ import SimpleLightbox from 'simplelightbox';
 // Дополнительный импорт стилей
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { InfiniteScroll } from '../node_modules/infinite-scroll/js/index';
+
+import InfiniteScroll from 'infinite-scroll';
 
 const lightbox = new SimpleLightbox('.gallery a', {
   /* options */
@@ -17,13 +18,14 @@ const gallery = document.querySelector('.gallery');
 const searchForm = document.querySelector('.search-form');
 const loadMoreBtn = document.querySelector('.load-more');
 loadMoreBtn.style.display = 'none';
-let elem = document.querySelector('.container');
-let infScroll = new InfiniteScroll(elem, {
-  // options
-  path: '.pagination__next',
-  append: '.post',
-  history: false,
-});
+// let elem = document.querySelector('.container');
+// let infScroll = new InfiniteScroll(elem, {
+//   // options
+//   path: fetchPictures(),
+//   append: '.post',
+//   history: false,
+// });
+
 const getSearchedResults = async e => {
   const requestName = searchForm.elements['searchQuery'].value;
   const result = await fetchPictures(requestName, num);
@@ -53,7 +55,6 @@ searchForm.addEventListener('submit', e => {
 
 const slowScroll = () => {
   const { height: cardHeight } = document.querySelector('.gallery');
-  console.log(document.querySelector('.gallery').offsetHeight);
   window.scrollBy({
     top: document.querySelector('.gallery').offsetHeight,
     behavior: 'smooth',
@@ -92,7 +93,7 @@ const renderPictureListItems = async ({ hits }) => {
   </div>`;
   }
   gallery.insertAdjacentHTML('beforeend', render);
-  // document.querySelectorAll('.img-thumbnail').style.height = "200px";
+
   lightbox.refresh();
   slowScroll();
 };
@@ -101,6 +102,3 @@ loadMoreBtn.addEventListener('click', async e => {
   await getSearchedResults();
   console.log(num);
 });
-// document.addEventListener('scroll', () => {
-
-// });
